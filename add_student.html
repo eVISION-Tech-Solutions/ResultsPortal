@@ -1,0 +1,24 @@
+{% extends 'results/base.html' %}
+{% block title %}Add Student{% endblock %}
+{% block content %}
+<h2 class="text-2xl font-bold text-indigo-700 mb-4">Add Student</h2>
+<form method="post" class="space-y-4 bg-white p-6 rounded shadow">
+    {% csrf_token %}
+    <div>
+        {{ form.name.label_tag }}
+        {{ form.name }}
+    </div>
+    <div>
+        {{ form.admission_number.label_tag }}
+        {{ form.admission_number }}
+    </div>
+    <div>
+        {{ form.student_class.label_tag }}
+        {{ form.student_class }}
+    </div>
+
+    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">
+        Add Student
+    </button>
+</form>
+{% endblock %}

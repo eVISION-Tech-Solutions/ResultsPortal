@@ -1,0 +1,60 @@
+{% extends 'results/base.html' %}
+{% block title %}Results Collection{% endblock %}
+{% block content %}
+<h2 class="text-2xl font-bold text-indigo-700 mb-4">Results Collection</h2>
+
+<form method="get" class="mb-4 flex flex-wrap gap-4 items-end">
+    <div>
+        <label for="student_class" class="block font-semibold">Filter by Class:</label>
+        <select name="student_class" id="student_class" class="border rounded p-2">
+            <option value="">All Classes</option>
+            {% for value, label in class_choices %}
+                <option value="{{ value }}" {% if selected_class == value %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div>
+        <label for="admission_number" class="block font-semibold">Search by Admission Number:</label>
+        <input type="text" name="admission_number" id="admission_number" value="{{ admission_number|default:'' }}" class="border rounded p-2">
+    </div>
+    <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Search</button>
+</form>
+
+{% if results %}
+<table class="min-w-full bg-white shadow rounded">
+    <thead>
+        <tr>
+            <th class="px-4 py-2">Student Name</th>
+            <th class="px-4 py-2">Admission No</th>
+            <th class="px-4 py-2">Class</th>
+            <th class="px-4 py-2">Subject</th>
+            <th class="px-4 py-2">Score</th>
+            <th class="px-4 py-2">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for result in results %}
+        <tr>
+            <td class="border px-4 py-2">{{ result.student.name }}</td>
+            <td class="border px-4 py-2">{{ result.student.admission_number }}</td>
+            <td class="border px-4 py-2">{{ result.student.student_class }}</td>
+            <td class="border px-4 py-2">{{ result.get_subject_display }}</td>
+            <td class="border px-4 py-2">
+                <form method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="result_id" value="{{ result.id }}">
+                    <input type="number" name="score" value="{{ result.score }}" min="0" max="100" class="border rounded p-1 w-20">
+                    <button type="submit" class="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded">Update</button>
+                </form>
+            </td>
+            <td class="border px-4 py-2">
+                <!-- Optionally, add more actions here -->
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p class="text-gray-600">No results found for the selected criteria.</p>
+{% endif %}
+{% endblock %}

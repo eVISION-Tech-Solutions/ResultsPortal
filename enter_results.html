@@ -1,0 +1,21 @@
+<h2>Enter Results for {{ student.name }}</h2>
+
+{% if form %}
+<form method="POST">
+  {% csrf_token %}
+  <input type="hidden" name="student_id" value="{{ student.id }}">
+  <div class="mb-4">
+    {{ form.subject.label_tag }}
+    {{ form.subject }}
+  </div>
+  <div class="mb-4">
+    {{ form.score.label_tag }}
+    {{ form.score }}
+  </div>
+  <button type="submit" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded">Submit Result</button>
+</form>
+{% else %}
+  <p>All subjects have results entered for this student.</p>
+{% endif %}
+
+

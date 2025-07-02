@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Results System{% endblock %}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans">
+    <nav class="bg-indigo-600 shadow p-4 flex justify-between items-center text-white">
+        <div class="text-xl font-bold">📊 Results Portal</div>
+        <div class="space-x-4">
+            <a href="/" class="hover:underline">Home</a>
+            <a href="/about/" class="hover:underline">About Us</a>
+            {% if user.is_authenticated %}
+                {% if user.is_teacher %}
+                    <a href="/add-result/" class="hover:underline">Add Result</a>
+                {% else %}
+                    <a href="/dashboard/" class="hover:underline">Dashboard</a>
+                {% endif %}
+                <span class="font-semibold">{{ user.name }}</span>
+                <a href="/logout/" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded">Logout</a>
+            {% else %}
+                <a href="/register/" class="hover:underline">Add Institution</a>
+                <a href="/login/" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded">Login</a>
+                <a href="/teacher-login/" class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded">Teacher Login</a>
+            {% endif %}
+        </div>
+    </nav>
+    <div class="p-6 max-w-4xl mx-auto">
+        {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-2" role="alert">
+                        <p>{{ message }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% block content %}{% endblock %}
+    </div>
+
+    {% block scripts %}{% endblock %}
+    <script>
+        // Confirmation before deleting a teacher
+        document.querySelectorAll('.delete-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                const confirmed = confirm('Are you sure you want to delete this teacher?');
+                if (!confirmed) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

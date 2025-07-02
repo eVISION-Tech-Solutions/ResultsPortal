@@ -1,0 +1,14 @@
+<h2>Lookup Student by Admission Number</h2>
+{% if error %}
+  <p style="color: red;">{{ error }}</p>
+{% endif %}
+{% if success %}
+  <p style="color: green;">{{ success }}</p>
+{% endif %}
+<form method="POST">
+  {% csrf_token %}
+  <label for="adm_no">Admission Number:</label>
+  <input type="text" name="adm_no" required>
+  <button type="submit">Find Student</button>
+</form>
+
